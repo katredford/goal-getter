@@ -4,14 +4,16 @@ import Ring from "../Ring/index"
 
 
 
-export default function Increment() {
+export default function Increment(props) {
   const [progress, setProgress] = useState(0);
-
+  
   
   const handleButtonClick = () => {
     // Increase progress by 10 on button click
-    setProgress((prevProgress) => prevProgress + 10);
+    setProgress((prevProgress) => prevProgress + props.progress);
   };
+
+
   return (
     <>
   

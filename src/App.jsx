@@ -2,12 +2,13 @@ import { useState } from 'react'
 import Ring from "./components/Ring/index"
 import './App.css'
 import Increment from './components/Increment'
+import CreateGoal from './components/CreateGoal'
 
 function App() {
 
   return (
     <>
-    <Increment />
+    <CreateGoal />
     </>
   )
 }
