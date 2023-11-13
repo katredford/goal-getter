@@ -3,34 +3,70 @@ import "./createGoal.css"
 import Increment from "../Increment"
 
 export default function CreateGoal() {
-  const [increment, setIncrement] = useState(10);
+  const [taskName, setTaskName] = useState('');
+  const [frequency, setFrequency] = useState('');
+  const [timePeriod, setTimePeriod] = useState('day')
 
-  const handleInputChange = (event) => {
-    // Update the increment value based on user input
-    const inputValue = event.target.value;
-    setIncrement(Number(inputValue));
-  };
+  function handleTaskNameChange(event) {
+    setTaskName(event.target.value)
+  }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Reset progress to 0 when the form is submitted
-    setProgress(0);
-  };
+  function handleFrequencyChange(event) {
+    setFrequency(event.target.value)
+  }
+
+  function handleTimePeriodChange(event) {
+    setTimePeriod(event.target.value)
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    const task = {
+      name: taskName,
+      frequency: frequency,
+      timePeriod: timePeriod,
+    }
+
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || []
+    const newTasks = [...tasks, task]
+    localStorage.setItem('tasks', JSON.stringify(newTasks))
+
+    setTaskName('');
+    setFrequency('');
+    setTimePeriod('day');
+  }
 
   return (
     <>
       <form onSubmit={handleSubmit}>
         <label>
-          Increment:
+          Task Name:
+          <input type="text" value={taskName} onChange={handleTaskNameChange}></input>
+        </label>
+
+        <label>
+          Frequency:
           <input
             type="number"
-            value={increment}
-            onChange={handleInputChange}
-          />
+            value={frequency}
+            onChange={handleFrequencyChange}
+          >
+          </input>
         </label>
-        <button type="submit">Set Increment</button>
+
+        <label>
+          Time Period:
+          <select value={timePeriod} onChange={handleTimePeriodChange}>
+            <option value="day"> Day</option>
+            <option value="week">Week</option>
+            <option value="month">Month</option>
+          </select>
+        </label>
+
+        <button type='submit'>create task</button>
       </form>
-      <Increment progress={increment} />
+      
     </>
   )
 }
