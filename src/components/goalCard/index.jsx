@@ -5,27 +5,22 @@ import Ring from '../Ring/index';
 
 export default function GoalCard({ task }) {
   const [progress, setProgress] = useState(0);
-  const [currentClicks, setCurrentClicks] = useState(0);
+ 
 
   useEffect(() => {
     const storedProgress = JSON.parse(localStorage.getItem(task.name)) || 0;
     setProgress(storedProgress);
-    setCurrentClicks(JSON.parse(localStorage.getItem(`${task.name}_clicks`)) || 0);
+   
   }, [task.name]);
 
   function handleIncrement() {
-    const updatedClicks = currentClicks + 1;
-    setCurrentClicks(updatedClicks);
-
-    if (updatedClicks >= task.frequency) {
-      setCurrentClicks(0);
-
-      const updatedProgress = progress + 10;
+    
+    const completeCirc = 100 / task.frequency
+    
+    const updatedProgress = progress + completeCirc;
+    
       setProgress(updatedProgress);
-      localStorage.setItem(task.name, JSON.stringify(updatedProgress));
-    } else {
-      localStorage.setItem(`${task.name}_clicks`, JSON.stringify(updatedClicks));
-    }
+    
   }
 
   return (
