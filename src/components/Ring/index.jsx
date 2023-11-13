@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import "./ring.css"
 
@@ -10,7 +10,7 @@ export default function Ring({ radius, stroke, progress }) {
   return (
     <svg height={radius * 2} width={radius * 2}>
       <circle
-        stroke="orange"
+        stroke="white"
         fill="transparent"
         strokeWidth={stroke}
         strokeDasharray={`${circumference} ${circumference}`}

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import "./createGoal.css"
-import Increment from "../Increment"
+
 
 export default function CreateGoal() {
   const [taskName, setTaskName] = useState('');
@@ -66,7 +66,7 @@ export default function CreateGoal() {
 
         <button type='submit'>create task</button>
       </form>
-      
+
     </>
   )
 }
