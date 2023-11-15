@@ -26,7 +26,8 @@ export default function CreateGoal() {
       name: taskName,
       frequency: frequency,
       timePeriod: timePeriod,
-      clickNum: 0
+      clickNum: 0,
+      completeCirc: 0,
     }
 
     const tasks = JSON.parse(localStorage.getItem("tasks")) || []

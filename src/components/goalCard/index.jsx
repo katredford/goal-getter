@@ -17,6 +17,21 @@ export default function GoalCard({ task }) {
     }
   }, [task.name]);
 
+
+
+  useEffect(() => {
+    const storedTask = localStorage.getItem(`task-${task.name}`);
+
+    if (storedTask) {
+      const parsedTask = JSON.parse(storedTask);
+      setProgress(parsedTask.completeCirc || 0);
+    }
+  }, [task.name]);
+
+
+
+
+
   function handleIncrement() {
     
     const completeCirc = 100 / task.frequency
@@ -27,8 +42,8 @@ export default function GoalCard({ task }) {
     
     const updatedClickNum = clickNum + 1;
     setClickNum(updatedClickNum);
-
-    const updatedTask = { ...task, clickNum: updatedClickNum };
+console.log("updated progress: ", updatedProgress, "updated clicknum", updatedClickNum)
+    const updatedTask = { ...task, clickNum: updatedClickNum, completeCirc: updatedProgress };
     localStorage.setItem(`task-${task.name}`, JSON.stringify(updatedTask));
 
     if (updatedClickNum >= task.frequency) {
