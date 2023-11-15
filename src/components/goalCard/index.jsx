@@ -5,7 +5,6 @@ import Ring from '../Ring/index';
 
 export default function GoalCard({ task }) {
   const [progress, setProgress] = useState(0);
- 
 
   useEffect(() => {
     const storedProgress = JSON.parse(localStorage.getItem(task.name)) || 0;
@@ -18,8 +17,9 @@ export default function GoalCard({ task }) {
     const completeCirc = 100 / task.frequency
     
     const updatedProgress = progress + completeCirc;
+  
+    setProgress(updatedProgress);
     
-      setProgress(updatedProgress);
     
   }
 
@@ -30,7 +30,13 @@ export default function GoalCard({ task }) {
         Frequency: {task.frequency} times every {task.timePeriod}
       </p>
       <Ring radius={60} stroke={4} progress={progress} />
-      <button onClick={handleIncrement}>Increment Ring</button>
+
+      {/* <button className='inc-btn' onClick={handleIncrement}>Increment Ring</button> */}
+      {progress < 100 && (
+        <button className='inc-btn' onClick={handleIncrement}>
+          Increment Ring
+        </button>
+      )}
     </div>
   );
 }
