@@ -54,13 +54,14 @@ console.log("updated progress: ", updatedProgress, "updated clicknum", updatedCl
   }
 
   return (
-    <div style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ddd' }}>
+    <div className='goalCard'>
       <h3>{task.name}</h3>
       <p>
         Frequency: {task.frequency} times every {task.timePeriod}
       </p>
-      <Ring radius={60} stroke={4} progress={progress} />
-
+      <Ring radius={100} stroke={10} progress={progress} />
+      <div className='background-circ'>hellow</div>
+      <h1 className='click-total'>{clickNum}</h1>
       {/* <button className='inc-btn' onClick={handleIncrement}>Increment Ring</button> */}
       {progress < 100 ? (
         <button className='inc-btn' onClick={handleIncrement}>
