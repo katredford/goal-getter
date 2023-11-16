@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './goalCard.css';
 import Ring from '../Ring/index'; 
 
-import { format, startOfDay, addDays } from 'date-fns';
+import { getDay, startOfDay, addDays } from 'date-fns';
 
 export default function GoalCard({ task }) {
   const [progress, setProgress] = useState(0);
@@ -12,14 +12,14 @@ export default function GoalCard({ task }) {
 
   useEffect(() => {
     const resetClickCount = () => {
-      
+     let now = new Date();
       if (task.timePeriod === 'day') {
         setClickNum(0);
         setProgress(0)
 
       // Calculate the time until the next midnight
         const now = new Date();
-        // const now = "2023-11-16T01:01:19.724Z"
+        // const now = new Date('2023-11-21T00:00:00.000Z');
         console.log(now)
       const midnight = startOfDay(addDays(now, 1));
 
@@ -29,7 +29,44 @@ export default function GoalCard({ task }) {
       // Set a timeout for the next midnight
         setTimeout(resetClickCount, delay);
       }
+
+      if (task.timePeriod === 'week') {
+       
+        const now = new Date();
+        // const now = new Date('2023-11-21T00:00:00.000Z');
+        
+        
+        if (getDay(now) === 1) {
+          setClickNum(0);
+          setProgress(0);
+
+          // Calculate the time until the next Monday midnight
+          const nextMonday = addDays(startOfDay(now), (8 - getDay(now)) % 7);
+          const delay = nextMonday - now;
+
+          // Set a timeout for the next Monday midnight
+          setTimeout(resetClickCount, delay);
+        }
+      }
+
+      if (task.timePeriod === "month") {
+
+        now = new Date('2023-12-01T00:00:00.000Z');
+        console.log("NONONOW", now)
+        // if (getDay(now) === 1 && now.getDate() === 1) {
+          setClickNum(0);
+          setProgress(0);
+
+          // Calculate the time until the next month's first day
+          const nextMonth = addDays(startOfDay(now), 32 - now.getDate());
+          const delay = nextMonth - now;
+
+          // Set a timeout for the next month's first day
+          setTimeout(resetClickCount, delay);
+        // }
+      }
     };
+    // };
 
     resetClickCount();
 
