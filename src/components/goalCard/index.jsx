@@ -3,10 +3,39 @@ import React, { useState, useEffect } from 'react';
 import './goalCard.css';
 import Ring from '../Ring/index'; 
 
+import { format, startOfDay, addDays } from 'date-fns';
+
 export default function GoalCard({ task }) {
   const [progress, setProgress] = useState(0);
   const [clickNum, setClickNum] = useState(0);
 
+
+  useEffect(() => {
+    const resetClickCount = () => {
+      
+      if (task.timePeriod === 'day') {
+        setClickNum(0);
+        setProgress(0)
+
+      // Calculate the time until the next midnight
+        const now = new Date();
+        // const now = "2023-11-16T01:01:19.724Z"
+        console.log(now)
+      const midnight = startOfDay(addDays(now, 1));
+
+      // Calculate the delay until the next midnight
+      const delay = midnight - now;
+
+      // Set a timeout for the next midnight
+        setTimeout(resetClickCount, delay);
+      }
+    };
+
+    resetClickCount();
+
+    // Clean up the timeout when the component unmounts
+    return () => clearTimeout();
+  }, [task.name, task.timePeriod]);
  
 
   useEffect(() => {
