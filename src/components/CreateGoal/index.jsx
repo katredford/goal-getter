@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import "./createGoal.css"
-
+import GoalsList from '../GoalsList';
 
 export default function CreateGoal() {
   const [taskName, setTaskName] = useState('');
   const [frequency, setFrequency] = useState('');
   const [timePeriod, setTimePeriod] = useState('day')
+
+  
 
   function handleTaskNameChange(event) {
     setTaskName(event.target.value)
@@ -68,7 +70,7 @@ export default function CreateGoal() {
 
         <button type='submit'>create task</button>
       </form>
-
+      <GoalsList />
     </>
   )
 }
