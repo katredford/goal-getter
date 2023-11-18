@@ -2,15 +2,17 @@
 import './goalsList.css'
 import GoalCard from "../GoalCard/index"
 
-export default function GoalsList() {
-  const tasks = JSON.parse(localStorage.getItem('tasks')) || []
+
+
+export default function GoalsList({ tasks, onDelete }) {
+  
   
 
   return (
     <div>
       {tasks.map((task, index) =>
       (
-        <GoalCard key={index} task={task} />
+        <GoalCard key={index} task={task} onDelete={onDelete} />
       )
       )}
     </div>

@@ -5,9 +5,16 @@ import Ring from '../Ring/index';
 
 import { getDay, startOfDay, addDays } from 'date-fns';
 
-export default function GoalCard({ task }) {
+export default function GoalCard({ task, onDelete }) {
   const [progress, setProgress] = useState(0);
   const [clickNum, setClickNum] = useState(0);
+
+
+  //*
+  const handleDelete = () => {
+    // Call the onDelete function with the task name to delete
+    onDelete(task.name);
+  };
 
 
   useEffect(() => {
@@ -142,7 +149,8 @@ console.log("updated progress: ", updatedProgress, "updated clicknum", updatedCl
         </button>
       ): (
       <h1>Complete!</h1>
-    )}
+      )}
+      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 }

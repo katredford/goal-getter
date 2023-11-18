@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
 import "./createGoal.css"
 import GoalsList from '../GoalsList';
 
@@ -6,8 +6,14 @@ export default function CreateGoal() {
   const [taskName, setTaskName] = useState('');
   const [frequency, setFrequency] = useState('');
   const [timePeriod, setTimePeriod] = useState('day')
-
+  const [tasks, setTasks] = useState([]);
   
+  useEffect(() => {
+    // Load tasks from localStorage on component mount
+    const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    setTasks(savedTasks);
+  }, []);
+
 
   function handleTaskNameChange(event) {
     setTaskName(event.target.value)
@@ -41,6 +47,17 @@ export default function CreateGoal() {
     setTimePeriod('day');
   }
 
+  function handleDeleteTask(taskNameToDelete) {
+    // Filter out the task to delete
+    const updatedTasks = tasks.filter((task) => task.name !== taskNameToDelete);
+
+    // Save the updated list of tasks to localStorage
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+
+    // Update the state to reflect the deleted task
+    setTasks(updatedTasks);
+  }
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -70,7 +87,7 @@ export default function CreateGoal() {
 
         <button type='submit'>create task</button>
       </form>
-      <GoalsList />
+      <GoalsList tasks={tasks} onDelete={handleDeleteTask} />
     </>
   )
 }
