@@ -4,33 +4,18 @@ const TaskContext = createContext();
 
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
-  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (!initialized) {
-      try {
-        const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-        if (tasks.length === 0) {
-          savedTasks.forEach((task) => {
-            setTasks((prevTasks) => [...prevTasks, task]);
-          });
-        }
-
-        setInitialized(true);
-      } catch (error) {
-        console.error('Error loading tasks from localStorage:', error);
-      }
-    }
-  }, [tasks, initialized]);
+    // Load tasks from localStorage on component mount
+    const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    setTasks(savedTasks);
+  }, []);
 
   const addTask = (newTask) => {
     try {
-      setTasks((prevTasks) => {
-        const updatedTasks = [...prevTasks, newTask];
-        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-        return updatedTasks;
-      });
+      const updatedTasks = [...tasks, newTask];
+      setTasks(updatedTasks);
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     } catch (error) {
       console.error('Error adding task to localStorage:', error);
     }
@@ -38,18 +23,28 @@ export const TaskProvider = ({ children }) => {
 
   const deleteTask = (taskName) => {
     try {
-      setTasks((prevTasks) => {
-        const updatedTasks = prevTasks.filter((task) => task.name !== taskName);
-        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-        return updatedTasks;
-      });
+      const updatedTasks = tasks.filter((task) => task.name !== taskName);
+      setTasks(updatedTasks);
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     } catch (error) {
       console.error('Error deleting task from localStorage:', error);
     }
   };
 
+  const incrementTask = (updatedTask) => {
+    try {
+      const updatedTasks = tasks.map((task) =>
+        task.name === updatedTask.name ? updatedTask : task
+      );
+      setTasks(updatedTasks);
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    } catch (error) {
+      console.error('Error updating task in localStorage:', error);
+    }
+  };
+
   return (
-    <TaskContext.Provider value={{ tasks, addTask, deleteTask }}>
+    <TaskContext.Provider value={{ tasks, addTask, deleteTask, incrementTask }}>
       {children}
     </TaskContext.Provider>
   );
