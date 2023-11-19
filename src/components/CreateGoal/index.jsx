@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { TaskProvider, useTaskContext } from '../TaskContext';
 import "./createGoal.css"
 import GoalsList from '../GoalsList';
 
@@ -6,14 +7,18 @@ export default function CreateGoal() {
   const [taskName, setTaskName] = useState('');
   const [frequency, setFrequency] = useState('');
   const [timePeriod, setTimePeriod] = useState('day')
-  const [tasks, setTasks] = useState([]);
+  const { tasks, addTask } = useTaskContext();
   
+
   useEffect(() => {
     // Load tasks from localStorage on component mount
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    setTasks(savedTasks);
-  }, []);
 
+    // Iterate over the array and add each task
+    savedTasks.forEach((task) => {
+      addTask(task);
+    });
+  }, []); // Empty dependency array to run only once on mount
 
   function handleTaskNameChange(event) {
     setTaskName(event.target.value)
@@ -30,7 +35,7 @@ export default function CreateGoal() {
   function handleSubmit(event) {
     event.preventDefault()
 
-    const task = {
+    const newTask = {
       name: taskName,
       frequency: frequency,
       timePeriod: timePeriod,
@@ -38,24 +43,15 @@ export default function CreateGoal() {
       completeCirc: 0,
     }
 
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || []
-    const newTasks = [...tasks, task]
-    localStorage.setItem('tasks', JSON.stringify(newTasks))
-
+    addTask(newTask);
     setTaskName('');
     setFrequency('');
     setTimePeriod('day');
   }
 
   function handleDeleteTask(taskNameToDelete) {
-    // Filter out the task to delete
-    const updatedTasks = tasks.filter((task) => task.name !== taskNameToDelete);
-
-    // Save the updated list of tasks to localStorage
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-
-    // Update the state to reflect the deleted task
-    setTasks(updatedTasks);
+ 
+    deleteTask(taskNameToDelete);
   }
 
   return (

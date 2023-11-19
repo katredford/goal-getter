@@ -1,154 +1,121 @@
 
 import React, { useState, useEffect } from 'react';
+import { useTaskContext } from '../TaskContext/index';
 import './goalCard.css';
 import Ring from '../Ring/index'; 
 
 import { getDay, startOfDay, addDays } from 'date-fns';
 
-export default function GoalCard({ task, onDelete }) {
+
+export default function GoalCard({ task }) {
   const [progress, setProgress] = useState(0);
   const [clickNum, setClickNum] = useState(0);
+  const { deleteTask, addTask } = useTaskContext();
 
-
-  //*
   const handleDelete = () => {
-    // Call the onDelete function with the task name to delete
-    onDelete(task.name);
+    deleteTask(task?.name); // Add null check for task
   };
-
 
   useEffect(() => {
     const resetClickCount = () => {
       let now = new Date();
       const midnight = startOfDay(addDays(now, 1));
-      // now = startOfDay(addDays(now, 1));
-      // Check if it's close to midnight (within a small threshold, e.g., 5 minutes)
-      if (midnight - now < 5 * 60 * 1000) {
-        setClickNum(0);
-        setProgress(0);
-        const updatedTask = { ...task, clickNum: 0, completeCirc: 0 };
-        localStorage.setItem(`task-${task.name}`, JSON.stringify(updatedTask));
 
-        // Calculate the time until the next midnight
-        const nextMidnight = startOfDay(addDays(now, 1));
+      if (task && task.name) { // Add null checks for task and task.name
+        if (midnight - now < 5 * 60 * 1000) {
+          setClickNum(0);
+          setProgress(0);
+          const updatedTask = { ...task, clickNum: 0, completeCirc: 0 };
+          localStorage.setItem(`task-${task.name}`, JSON.stringify(updatedTask));
 
-        // Calculate the delay until the next midnight
-        const delay = nextMidnight - now;
+          const nextMidnight = startOfDay(addDays(now, 1));
+          const delay = nextMidnight - now;
 
-        // Set a timeout for the next midnight
-        setTimeout(resetClickCount, delay);
-      }
-     
-      if (task.timePeriod === 'week' && getDay(now) === 1) {
-       
-        setClickNum(0);
-        setProgress(0);
-        const updatedTask = { ...task, clickNum: 0, completeCirc: 0 };
-        localStorage.setItem(`task-${task.name}`, JSON.stringify(updatedTask));
+          setTimeout(resetClickCount, delay);
+        }
 
-        // Calculate the time until the next Monday midnight
-        const nextMonday = addDays(startOfDay(now), (8 - getDay(now)) % 7);
-      
-        // If it's already Monday, set the delay to midnight; otherwise, set the delay to the next Monday
-        const delay = getDay(now) === 1 ? nextMonday - now : 24 * 60 * 60 * 1000;
+        if (task.timePeriod === 'week' && getDay(now) === 1) {
+          setClickNum(0);
+          setProgress(0);
+          const updatedTask = { ...task, clickNum: 0, completeCirc: 0 };
+          localStorage.setItem(`task-${task.name}`, JSON.stringify(updatedTask));
 
-        // Set a timeout for the next Monday midnight
-        setTimeout(resetClickCount, delay);
-      }
-    
+          const nextMonday = addDays(startOfDay(now), (8 - getDay(now)) % 7);
+          const delay = getDay(now) === 1 ? nextMonday - now : 24 * 60 * 60 * 1000;
 
-        
-      if (task.timePeriod === "month") {
-        // now = addDays(startOfDay(now), 31 - now.getDate());
-        // now = new Date('2023-12-01T00:00:00.000Z');
-        console.log(now)
-        console.log("NONONOW", now.getDate())
-        console.log("Nnow again", getDay(now))
-        if (now.getDate() === 1) {
-        const updatedTask = { ...task, clickNum: 0, completeCirc: 0 };
-        localStorage.setItem(`task-${task.name}`, JSON.stringify(updatedTask));
+          setTimeout(resetClickCount, delay);
+        }
+
+        if (task.timePeriod === "month" && now.getDate() === 1) {
+          const updatedTask = { ...task, clickNum: 0, completeCirc: 0 };
+          localStorage.setItem(`task-${task.name}`, JSON.stringify(updatedTask));
           setClickNum(0);
           setProgress(0);
 
-          // Calculate the time until the next month's first day
           const nextMonth = addDays(startOfDay(now), 31 - now.getDate());
           const delay = nextMonth - now;
-          console.log("delay dealay",delay)
-          // Set a timeout for the next month's first day
+
           setTimeout(resetClickCount, delay);
         }
       }
     };
-    // };
 
     resetClickCount();
 
-    // Clean up the timeout when the component unmounts
     return () => clearTimeout();
-  }, [task.name, task.timePeriod]);
- 
-
+  }, [task?.name, task?.timePeriod]); // Add null checks for task properties
 
   useEffect(() => {
-    const storedTask = localStorage.getItem(`task-${task.name}`);
+    const storedTask = localStorage.getItem(`task-${task?.name}`);
     if (storedTask) {
       const parsedTask = JSON.parse(storedTask);
-      setClickNum(parsedTask.clickNum || 0);
+      setClickNum(parsedTask?.clickNum || 0); // Add null check for parsedTask
     }
-  }, [task.name]);
-
-
+  }, [task?.name]);
 
   useEffect(() => {
-    const storedTask = localStorage.getItem(`task-${task.name}`);
-
+    const storedTask = localStorage.getItem(`task-${task?.name}`);
     if (storedTask) {
       const parsedTask = JSON.parse(storedTask);
-      setProgress(parsedTask.completeCirc || 0);
+      setProgress(parsedTask?.completeCirc || 0); // Add null check for parsedTask
     }
-  }, [task.name]);
+  }, [task?.name]);
 
-
-
-
-
-  function handleIncrement() {
-    
-    const completeCirc = 100 / task.frequency
+  const handleIncrement = () => {
+    const completeCirc = 100 / task?.frequency;
 
     const updatedProgress = progress + completeCirc;
-  
     setProgress(updatedProgress);
-    
+
     const updatedClickNum = clickNum + 1;
     setClickNum(updatedClickNum);
-console.log("updated progress: ", updatedProgress, "updated clicknum", updatedClickNum)
-    const updatedTask = { ...task, clickNum: updatedClickNum, completeCirc: updatedProgress };
-    localStorage.setItem(`task-${task.name}`, JSON.stringify(updatedTask));
 
-    if (updatedClickNum >= task.frequency) {
-    
-      localStorage.setItem(`task-${task.name}`, JSON.stringify(0));
+    if (task && task.name) {
+      const updatedTask = { ...task, clickNum: updatedClickNum, completeCirc: updatedProgress };
+      addTask(updatedTask);
+
+      if (updatedClickNum >= task.frequency) {
+        const resetTask = { ...task, clickNum: 0 };
+        addTask(resetTask);
+      }
     }
-  
-  }
+  };
 
   return (
     <div className='goalCard'>
-      <h3>{task.name}</h3>
+      <h3>{task?.name}</h3>
       <p>
-        Frequency: {task.frequency} times every {task.timePeriod}
+        Frequency: {task?.frequency} times every {task?.timePeriod}
       </p>
       <Ring radius={100} stroke={10} progress={progress} />
       <div className='background-circ'>hellow</div>
       <h1 className='click-total'>{clickNum}</h1>
-      {/* <button className='inc-btn' onClick={handleIncrement}>Increment Ring</button> */}
       {progress < 100 ? (
         <button className='inc-btn' onClick={handleIncrement}>
           Increment Ring
         </button>
-      ): (
-      <h1>Complete!</h1>
+      ) : (
+        <h1>Complete!</h1>
       )}
       <button onClick={handleDelete}>Delete</button>
     </div>
