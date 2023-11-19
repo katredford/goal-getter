@@ -19,8 +19,9 @@ export default function GoalCard({ task }) {
       setClickNum(storedTask.clickNum || 0);
       setProgress(storedTask.completeCirc || 0);
 
-      if (storedTask.clickNum > task.frequency) {
-        setClickNum(0);
+      if (storedTask.clickNum >= task?.frequency) {
+        // Ensure progress is set to 100 when the click count equals or exceeds the frequency
+        setProgress(100);
       }
     }
   }, [tasks, task?.name]);
@@ -30,24 +31,31 @@ export default function GoalCard({ task }) {
     const completeCirc = 100 / task?.frequency;
 
     const updatedProgress = progress + completeCirc;
-    setProgress(updatedProgress);
 
+    // Increment clickNum
     const updatedClickNum = clickNum + 1;
-    setClickNum(updatedClickNum);
+
+    if (updatedClickNum < task?.frequency) {
+      // If clickNum is less than the frequency, update progress and clickNum
+      setProgress(updatedProgress);
+      setClickNum(updatedClickNum);
+    } else {
+      // If clickNum reaches the frequency, set progress to 100 and reset clickNum
+      setProgress(100);
+      setClickNum(0);
+    }
 
     if (task && task.name) {
       const existingTask = tasks.find((t) => t.name === task.name);
 
       if (existingTask) {
         // Task already exists, update it
-        const updatedTask = { ...existingTask, clickNum: updatedClickNum, completeCirc: updatedProgress };
-        addTask(updatedTask);
-
-        if (updatedClickNum >= task.frequency) {
-          // Check if it's greater than or equal to the frequency before resetting
-          const resetTask = { ...existingTask, clickNum: 0 };
-          addTask(resetTask);
-        }
+        const updatedTask = {
+          ...existingTask,
+          clickNum: updatedClickNum,
+          completeCirc: updatedProgress,
+        };
+        incrementTask(updatedTask);
       }
     }
   };
