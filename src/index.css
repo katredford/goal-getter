@@ -3,3 +3,9 @@
   padding: 0;
 }
 
+@font-face {
+  font-family: "Nanum Gothic Coding", sans-serif;
+  src: local("Nanum_Gothic_Coding"),
+    url("./fonts/Nanum_Gothic_Coding/NanumGothicCoding-Regular.ttf") format("truetype");
+  font-weight: regular;
+}
