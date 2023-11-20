@@ -12,10 +12,14 @@
   padding: 10px;
 }
 
+.goalCard h2 {
+  font-size: 30px;
+  margin-top: 10px;
+}
 .click-total {
   position: absolute;
-  top: 100px;
-    right: 131px;
+  top: 108px;
+    right: 139px;
     font-size: 67px;
 }
 

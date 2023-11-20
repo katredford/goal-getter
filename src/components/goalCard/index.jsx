@@ -77,7 +77,7 @@ export default function GoalCard({ task }) {
           +
         </li>
       ) : (
-        <h1>Complete!</h1>
+        <h2>Complete!</h2>
       )}
         <li className='del-btn' onClick={handleDelete}>Delete</li>
       </div>
