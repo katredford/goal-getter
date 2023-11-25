@@ -1,33 +1,63 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const TaskContext = createContext();
+import { isAfter, set, format, startOfDay, addDays } from 'date-fns';
 
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
 
-  const handleMidnightReset = () => {
-    // console.log("day day day")
-    const now = new Date();
-    const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0);
+  const simulateMidnight = () => {
+    // Set the time to midnight
+    const now = set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
 
-    if (now >= midnight) {
-      // Reset clickNum for tasks with timePeriod === "day"
+    // Log the current time
+    console.log('Current time:', now);
+
+    // Call your reset function
+    handleMidnightReset(now);
+  };
+
+  const handleMidnightReset = () => {
+    console.log("day day day");
+    // const now = new Date('2023-11-20T00:00:00.000Z');
+    const now = new Date();
+    // const now = set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+    const midnight = set(now, { hours: 24, minutes: 0, seconds: 0, milliseconds: 0 });
+    // console.log('now:', now);
+    // console.log('midnight:', midnight);
+
+    // // Set now to midnight (00:00:00) of the current day
+    // const now = startOfDay(new Date());
+
+    // // Set midnight to 00:00:00 tomorrow
+    // const midnight = startOfDay(addDays(now, 1));
+
+    console.log('now:', now);
+    console.log('midnight:', midnight);
+
+
+    if (isAfter(now, midnight)) {
+   
       const updatedTasks = tasks.map((task) =>
         task.timePeriod === 'day' ? { ...task, clickNum: 0, completeCirc: 0 } : task
       );
-
+      console.log("bleep blorp", updatedTasks)
       setTasks(updatedTasks);
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     }
+    return updatedTasks;
   };
+  
 
+
+
+    // simulateMidnight()
   const handleWeeklyReset = () => {
     // console.log("week week week")
     const now = new Date();
     const nextMonday = new Date(now);
     nextMonday.setDate(now.getDate() + ((7 - now.getDay()) + 1) % 7); // Calculate days until next Monday
-    console.log("nextMonday", nextMonday)
+    // console.log("nextMonday", nextMonday)
     nextMonday.setHours(0, 0, 0, 0);
 
     const updatedTasks = tasks.map((task) => {
@@ -61,12 +91,12 @@ export const TaskProvider = ({ children }) => {
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
   };
 
-    useEffect(() => {
-    const intervalId = setInterval(handleMidnightReset, 60000); // Check every minute (adjust as needed)
+  //   useEffect(() => {
+  //   const intervalId = setInterval(handleMidnightReset, 60000); // Check every minute (adjust as needed)
 
-    // Cleanup the interval on component unmount
-    return () => clearInterval(intervalId);
-  }, [tasks]);
+  //   // Cleanup the interval on component unmount
+  //   return () => clearInterval(intervalId);
+  // }, [tasks]);
 
 
 
@@ -83,8 +113,8 @@ export const TaskProvider = ({ children }) => {
       handleMidnightReset()
       handleWeeklyReset()
       handleMonthlyReset()
-    }, 60000) // Check every minute (adjust as needed)
-  
+    // }, 10000)
+    }, 60000)
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
   }, [tasks]);
