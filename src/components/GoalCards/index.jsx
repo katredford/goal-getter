@@ -5,6 +5,7 @@ import Ring from '../Ring';
 import "../../fonts/Nanum_Gothic_Coding/NanumGothicCoding-Regular.ttf"
 import "./goalCard.css"
 
+//is this true?
 export default function GoalCard({ task }) {
   const [progress, setProgress] = useState(0);
   const [clickNum, setClickNum] = useState(0);
