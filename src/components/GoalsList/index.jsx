@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTaskContext } from '../TaskContext';
-import GoalCard from '../goalCard';
+import GoalCard from '../GoalCard';
 import "./goalsList.css"
 
 export default function GoalsList() {
