@@ -19,14 +19,13 @@ export const TaskProvider = ({ children }) => {
 
   const handleMidnightReset = () => {
     console.log("day day day");
-    // const now = new Date('2023-11-20T00:00:00.000Z');
+ 
+    
     const now = new Date();
-    // const now = set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
     const midnight = set(now, { hours: 24, minutes: 0, seconds: 0, milliseconds: 0 });
-    // console.log('now:', now);
-    // console.log('midnight:', midnight);
 
-    // // Set now to midnight (00:00:00) of the current day
+    //TESTING
+    // Set now to midnight (00:00:00) of the current day
     // const now = startOfDay(new Date());
 
     // // Set midnight to 00:00:00 tomorrow
@@ -36,9 +35,9 @@ export const TaskProvider = ({ children }) => {
     console.log('midnight:', midnight);
 
 
-    if (isAfter(now, midnight)) {
-   
-      const updatedTasks = tasks.map((task) =>
+    // if (isAfter(midnight, now)) {
+      if (isAfter(now, midnight)) {
+       const updatedTasks = tasks.map((task) =>
         task.timePeriod === 'day' ? { ...task, clickNum: 0, completeCirc: 0 } : task
       );
       console.log("bleep blorp", updatedTasks)
@@ -113,8 +112,8 @@ export const TaskProvider = ({ children }) => {
       handleMidnightReset()
       handleWeeklyReset()
       handleMonthlyReset()
-    // }, 10000)
-    }, 60000)
+    }, 10000)
+    // }, 60000)
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
   }, [tasks]);
