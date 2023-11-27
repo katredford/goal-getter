@@ -1,3 +1,19 @@
 
 
 
+form {
+  display: flex;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 400px) {
+  /* body {
+    background-color: lightgreen;
+  } */
+
+  form {
+    flex-direction: column;
+    
+  }
+}

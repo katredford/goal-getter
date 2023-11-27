@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTaskContext } from '../TaskContext';
-
+import "./createGoal.css"
 
 export default function CreateGoal() {
   const [taskName, setTaskName] = useState('');
@@ -48,7 +48,7 @@ export default function CreateGoal() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form className="createForm" onSubmit={handleSubmit}>
         <label>
           Task Name:
           <input type="text" value={taskName} onChange={handleTaskNameChange}></input>
