@@ -35,8 +35,8 @@ export const TaskProvider = ({ children }) => {
     console.log('midnight:', midnight);
 
 
-    // if (isAfter(midnight, now)) {
-      if (isAfter(now, midnight)) {
+    if (isAfter(midnight, now)) {
+      // if (isAfter(now, midnight)) {
        const updatedTasks = tasks.map((task) =>
         task.timePeriod === 'day' ? { ...task, clickNum: 0, completeCirc: 0 } : task
       );
