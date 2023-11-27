@@ -22,28 +22,38 @@ export const TaskProvider = ({ children }) => {
  
     
     const now = new Date();
-    const midnight = set(now, { hours: 24, minutes: 0, seconds: 0, milliseconds: 0 });
+    const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+    const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
 
     //TESTING
-    // Set now to midnight (00:00:00) of the current day
-    // const now = startOfDay(new Date());
 
-    // // Set midnight to 00:00:00 tomorrow
-    // const midnight = startOfDay(addDays(now, 1));
+    // const now = new Date('2023-11-25T00:01:00'); // Set it to a time between midnight and two minutes past midnight
+    // const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+    // const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
 
     console.log('now:', now);
     console.log('midnight:', midnight);
 
 
-    if (isAfter(midnight, now)) {
-      // if (isAfter(now, midnight)) {
-       const updatedTasks = tasks.map((task) =>
+    if (now >= midnight && now <= twoMinutesPastMidnight) {
+      const updatedTasks = tasks.map((task) =>
         task.timePeriod === 'day' ? { ...task, clickNum: 0, completeCirc: 0 } : task
       );
-      console.log("bleep blorp", updatedTasks)
+
+      console.log('bleep blorp', updatedTasks);
       setTasks(updatedTasks);
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     }
+
+    // if (isAfter(now, midnight)) {
+    //   // if (now === midnight) {
+    //    const updatedTasks = tasks.map((task) =>
+    //     task.timePeriod === 'day' ? { ...task, clickNum: 0, completeCirc: 0 } : task
+    //   );
+    //   console.log("bleep blorp", updatedTasks)
+    //   setTasks(updatedTasks);
+    //   localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    // }
     return updatedTasks;
   };
   
