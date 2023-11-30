@@ -1,10 +1,11 @@
 
 
 
-form {
+ form {
   display: flex;
-  /* flex-direction: column; */
-  flex-wrap: wrap;
+  flex-direction: column;
+   flex-wrap: wrap;
+   width:200px;
 }
 
 @media screen and (max-width: 400px) {
@@ -12,8 +13,8 @@ form {
     background-color: lightgreen;
   } */
 
-  form {
-    flex-direction: column;
-    
-  }
-}
+   form {
+  
+    width:300px;
+  } 
+}  

@@ -2,7 +2,7 @@
 /* .inc-btn {
   
 } */
-
+ 
 @font-face {
   font-family: "Nanum Gothic Coding", sans-serif;
   src: local("Nanum_Gothic_Coding"),
@@ -15,4 +15,5 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-}
+ 
+} 

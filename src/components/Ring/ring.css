@@ -9,6 +9,7 @@ body {
     
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
+    overflow: visible !important;
 }
 
 
@@ -17,3 +18,4 @@ circle {
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
 }
+

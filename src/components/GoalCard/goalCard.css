@@ -1,5 +1,5 @@
 
-.goalCard {
+ .goalCard {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,8 +8,8 @@
   background-color: rgb(148, 153, 229);
   position:relative;
   margin: 5px;
-  border-radius: 15px;
   padding: 10px;
+  border-radius: 15px;
 }
 
 .goalCard h2 {
@@ -32,10 +32,10 @@
   list-style-type: none;
   color:white;
   background-color: #18189c;
-  /* font-size: 24px; */
-  margin: 2px;
-    /* padding: 5px; */
-    border-radius: 23px;
+  font-size: 24px; 
+   margin: 2px; 
+     padding: 5px; 
+     border-radius: 23px;
   
 }
 
@@ -45,7 +45,7 @@
 .del-btn {
   font-size: 24px;
   padding: 12px;
-}
+} 
 .inc-btn {
   width: 88px;
     font-size: 43px;
@@ -59,14 +59,16 @@
   position: relative;
   top: 100px;
     right: 131px;
+    z-index: -1
 } */
 
 @media screen and (max-width: 480px) {
-  /* body {
-    background-color: lightgreen;
-  } */
+
 
     .goalCard {
-      width:80%;
+      width:100%;
+      margin-top: 8px;
+      /* margin: 0px; */
+        padding: 0px;
     }
-}
+} 

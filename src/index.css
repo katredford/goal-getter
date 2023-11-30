@@ -1,11 +1,16 @@
-* {
+ * {
   margin: 0;
   padding: 0;
-}
+  box-sizing: border-box;
+}  
 
-@font-face {
+/* body {
+  margin: 0;
+} */
+
+/* @font-face {
   font-family: "Nanum Gothic Coding", sans-serif;
   src: local("Nanum_Gothic_Coding"),
     url("./fonts/Nanum_Gothic_Coding/NanumGothicCoding-Regular.ttf") format("truetype");
   font-weight: regular;
-}
+} */

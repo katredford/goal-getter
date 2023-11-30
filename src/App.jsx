@@ -1,4 +1,4 @@
-import './App.css'
+// import './App.css'
 import { TaskProvider } from './components/TaskContext';
 import CreateGoal from './components/CreateGoal'
 import GoalsList from './components/GoalsList';
@@ -15,6 +15,7 @@ function App() {
         <CreateGoal />
         <GoalsList />
       </TaskProvider>
+      {/* <h1>Hello</h1> */}
 
     </>
   )
