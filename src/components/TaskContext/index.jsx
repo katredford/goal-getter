@@ -75,6 +75,39 @@ export const TaskProvider = ({ children }) => {
     return updatedTasks;
   };
 
+  const handleMonthlyReset = () => {
+
+    console.log("MONT MONTH MONTH")
+    const now = new Date();
+    // const now = new Date('2023-11-01T00:01:00');
+    const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+    const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
+    const isFirstDayOfMonth = now.getDate() === 1;
+
+    // Uncomment the line below for testing a specific date
+    // const now = new Date('2023-11-01T00:01:00');
+    console.log("new month", isFirstDayOfMonth)
+    let updatedTasks = tasks; // Initialize with the current tasks
+
+    if (now >= midnight && isFirstDayOfMonth && now <= twoMinutesPastMidnight) {
+      // Use the functional form of setTasks
+      console.log("THIS THIS HTIS")
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.timePeriod === 'month' ? { ...task, clickNum: 0, completeCirc: 0 } : task
+        )
+      );
+
+      // Save to local storage
+      const updatedTasks = tasks.map((task) =>
+        task.timePeriod === 'month' ? { ...task, clickNum: 0, completeCirc: 0 } : task
+      );
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    }
+
+    return updatedTasks;
+  };
+
   useEffect(() => {
     // Load tasks from localStorage on component mount
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -96,12 +129,12 @@ export const TaskProvider = ({ children }) => {
     return () => clearInterval(weeklyIntervalId);
   }, [tasks]);
 
-  // useEffect(() => {
-  //   const monthlyIntervalId = setInterval(() => {
-  //     handleMonthlyReset();
-  //   }, 10000);
-  //   return () => clearInterval(monthlyIntervalId);
-  // }, [tasks]);
+  useEffect(() => {
+    const monthlyIntervalId = setInterval(() => {
+      handleMonthlyReset();
+    }, 10000);
+    return () => clearInterval(monthlyIntervalId);
+  }, [tasks]);
     
   //   // const now = new Date();
   //   // const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
