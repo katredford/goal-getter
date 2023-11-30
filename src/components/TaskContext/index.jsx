@@ -6,37 +6,28 @@ import { isAfter, set, format, startOfDay, addDays } from 'date-fns';
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
 
-  const simulateMidnight = () => {
-    // Set the time to midnight
-    const now = set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
-
-    // Log the current time
-    console.log('Current time:', now);
-
-    // Call your reset function
-    handleMidnightReset(now);
-  };
 
   const handleMidnightReset = () => {
     console.log("day day day");
- 
-    
+
     const now = new Date();
     const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
     const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
 
-    //TESTING
-
-    // const now = new Date('2023-11-25T00:01:00'); // Set it to a time between midnight and two minutes past midnight
+    //# TESTING
+    // const now = new Date('2023-11-27T00:01:00'); // Set it to a time between midnight and two minutes past midnight
     // const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
     // const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
+   
 
     console.log('now:', now);
     console.log('midnight:', midnight);
+   
 
+    let updatedTasks = tasks; // Initialize with the current tasks
 
     if (now >= midnight && now <= twoMinutesPastMidnight) {
-      const updatedTasks = tasks.map((task) =>
+      updatedTasks = tasks.map((task) =>
         task.timePeriod === 'day' ? { ...task, clickNum: 0, completeCirc: 0 } : task
       );
 
@@ -45,70 +36,44 @@ export const TaskProvider = ({ children }) => {
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     }
 
-    // if (isAfter(now, midnight)) {
-    //   // if (now === midnight) {
-    //    const updatedTasks = tasks.map((task) =>
-    //     task.timePeriod === 'day' ? { ...task, clickNum: 0, completeCirc: 0 } : task
-    //   );
-    //   console.log("bleep blorp", updatedTasks)
-    //   setTasks(updatedTasks);
-    //   localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-    // }
     return updatedTasks;
   };
-  
 
-
-
-    // simulateMidnight()
   const handleWeeklyReset = () => {
-    // console.log("week week week")
+    console.log("day day day");
+
     const now = new Date();
-    const nextMonday = new Date(now);
-    nextMonday.setDate(now.getDate() + ((7 - now.getDay()) + 1) % 7); // Calculate days until next Monday
-    // console.log("nextMonday", nextMonday)
-    nextMonday.setHours(0, 0, 0, 0);
+    const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+    const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
+    const isMonday = now.getDay() === 1;
 
-    const updatedTasks = tasks.map((task) => {
-      if (task.timePeriod === 'week' && now >= nextMonday) {
-        // Reset clickNum and completeCirc for tasks with timePeriod === "week"
-        return { ...task, clickNum: 0, completeCirc: 0 };
-      }
-      return task;
-    });
+    //# TESTING
+    // const now = new Date('2023-11-27T00:01:00'); // Set it to a time between midnight and two minutes past midnight
+    // const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+    // const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
 
-    setTasks(updatedTasks);
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    // console.log("MONDAY", isMonday)
+
+    let updatedTasks = tasks; // Initialize with the current tasks
+
+  
+    if (now >= midnight && isMonday && now <= twoMinutesPastMidnight) {
+      // Use the functional form of setTasks
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.timePeriod === 'week' ? { ...task, clickNum: 0, completeCirc: 0 } : task
+        )
+      );
+
+      // Save to local storage
+      const updatedTasks = tasks.map((task) =>
+        task.timePeriod === 'week' ? { ...task, clickNum: 0, completeCirc: 0 } : task
+      );
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    }
+
+    return updatedTasks;
   };
-
-  const handleMonthlyReset = () => {
-    // console.log("month month month")
-    const now = new Date();
-    const nextMonth = new Date(now);
-    nextMonth.setMonth(now.getMonth() + 1, 1); // Set to the first day of the next month
-    nextMonth.setHours(0, 0, 0, 0);
-
-    const updatedTasks = tasks.map((task) => {
-      if (task.timePeriod === 'month' && now >= nextMonth) {
-        // Reset clickNum and completeCirc for tasks with timePeriod === "month"
-        return { ...task, clickNum: 0, completeCirc: 0 };
-      }
-      return task;
-    });
-
-    setTasks(updatedTasks);
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-  };
-
-  //   useEffect(() => {
-  //   const intervalId = setInterval(handleMidnightReset, 60000); // Check every minute (adjust as needed)
-
-  //   // Cleanup the interval on component unmount
-  //   return () => clearInterval(intervalId);
-  // }, [tasks]);
-
-
-
 
   useEffect(() => {
     // Load tasks from localStorage on component mount
@@ -116,17 +81,72 @@ export const TaskProvider = ({ children }) => {
     setTasks(savedTasks);
   }, []);
 
-
   useEffect(() => {
     const intervalId = setInterval(() => {
-      handleMidnightReset()
-      handleWeeklyReset()
-      handleMonthlyReset()
-    }, 10000)
-    // }, 60000)
+      handleMidnightReset();
+    }, 10000);
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
   }, [tasks]);
+  
+  useEffect(() => {
+    const weeklyIntervalId = setInterval(() => {
+      handleWeeklyReset();
+    }, 10000);
+    return () => clearInterval(weeklyIntervalId);
+  }, [tasks]);
+
+  // useEffect(() => {
+  //   const monthlyIntervalId = setInterval(() => {
+  //     handleMonthlyReset();
+  //   }, 10000);
+  //   return () => clearInterval(monthlyIntervalId);
+  // }, [tasks]);
+    
+  //   // const now = new Date();
+  //   // const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+  //   // const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
+
+  //   //TESTING
+
+  //   const now = new Date('2023-11-25T00:01:00'); // Set it to a time between midnight and two minutes past midnight
+  //   const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+  //   const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
+
+  //   console.log('now:', now);
+  //   console.log('midnight:', midnight);
+
+
+  //   if (now >= midnight && now <= twoMinutesPastMidnight) {
+  //     const updatedTasks = tasks.map((task) =>
+  //       task.timePeriod === 'day' ? { ...task, clickNum: 0, completeCirc: 0 } : task
+  //     );
+
+  //     console.log('bleep blorp', updatedTasks);
+  //     setTasks(updatedTasks);
+  //     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+  //   }
+
+  //   return updatedTasks;
+  // };
+  
+
+  // useEffect(() => {
+  //   // Load tasks from localStorage on component mount
+  //   const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  //   setTasks(savedTasks);
+  // }, []);
+
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     handleMidnightReset()
+     
+  //   }, 10000)
+  //   // }, 60000)
+  //   // Cleanup the interval on component unmount
+  //   return () => clearInterval(intervalId);
+  // }, [tasks]);
 
   const addTask = (newTask) => {
     try {
