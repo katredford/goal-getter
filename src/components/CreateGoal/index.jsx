@@ -64,7 +64,9 @@ export default function CreateGoal() {
 
     setTaskName('');
     setFrequency('');
-    setTimePeriod('day');
+    setTimePeriod('no-repeat');
+    setIsChecked(false);
+    setDeadline({ date: '', time: '' });
   }
 
 
@@ -86,7 +88,7 @@ export default function CreateGoal() {
           </select>
         </label>
 
-       
+
         {timePeriod !== 'no-repeat' && (
           <label>
             Frequency:
@@ -105,23 +107,23 @@ export default function CreateGoal() {
         </label>
 
         {timePeriod === 'no-repeat' && (
-        
-        <label>
-          Deadline
-          <input
-            type="date"
-            value={deadline.date}
-            onChange={handleDeadlineChange}
-            />
-          <input
-            type="time"
-            value={deadline.time}
-            onChange={handleDeadlineChange}
-            />
-        </label>
-            )}
 
-       
+          <label>
+            Deadline
+            <input
+              type="date"
+              value={deadline.date}
+              onChange={handleDeadlineChange}
+            />
+            <input
+              type="time"
+              value={deadline.time}
+              onChange={handleDeadlineChange}
+            />
+          </label>
+        )}
+
+
 
         <button type='submit'>Create Task</button>
       </form>
