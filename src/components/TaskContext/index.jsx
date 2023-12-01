@@ -13,16 +13,22 @@ export const TaskProvider = ({ children }) => {
   };
 
   const handleReset = (timePeriod, condition) => {
+    //TESTING remember to change this based on what is being tested, 
+    //not every monday starts a new month
+    const now = new Date('2023-12-04T00:00:00');
 
-    const now = new Date();
-    // const now = new Date('2023-11-01T00:00:00');
+    // const now = new Date();
+    
     const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
     const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
     console.log(condition, timePeriod)
     if (condition(now)) {
-      console.log(now, timePeriod)
+      const isMidnight = now >= midnight;
+      const isTwoMinutesPastMidnight = now <= twoMinutesPastMidnight;
+      console.log('Is midnight?', isMidnight);
+      console.log('Is two minutes past midnight?', isTwoMinutesPastMidnight);
       const updatedTasks = resetTaskValues(timePeriod);
-
+      console.log("handle reset", updatedTasks)
       setTasks(updatedTasks);
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
       return updatedTasks;
@@ -33,16 +39,17 @@ export const TaskProvider = ({ children }) => {
 
   const handleMidnightReset = () => {
     console.log('day day day');
+    // const now = new Date('2023-11-01T00:00:00');
     const now = new Date();
-    // const now = new Date('2023-11-01T00:01:00');
     const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
     const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
-    return handleReset('day', (now) => now >= midnight && now <= twoMinutesPastMidnight);
+    const condition = () => now >= midnight && now <= twoMinutesPastMidnight;
+    return handleReset('day', condition);
   };
 
 
   const handleWeeklyReset = () => {
-    // const now = new Date('2023-12-04T00:00:00');
+    // const now = new Date('2023-12-04T00:00:00'); //this is a monday
     // const isMonday = now.getDay() === 1;
     const now = new Date();
     const isMonday = new Date().getDay() === 1;
@@ -56,7 +63,7 @@ export const TaskProvider = ({ children }) => {
   };
 
   const handleMonthlyReset = () => {
-    // const now = new Date('2023-11-01T00:01:00');
+    // const now = new Date('2023-11-01T00:01:00'); this is a beginning of a month
     // const isFirstDayOfMonth = now.getDate() === 1;
     const now = new Date();
     const isFirstDayOfMonth = new Date().getDate() === 1;
