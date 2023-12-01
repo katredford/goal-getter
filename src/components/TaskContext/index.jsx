@@ -1,114 +1,68 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const TaskContext = createContext();
-import { isAfter, set, format, startOfDay, addDays } from 'date-fns';
+import { set } from 'date-fns';
 
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
 
-  const simulateMidnight = () => {
-    // Set the time to midnight
-    const now = set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+  const resetTaskValues = (timePeriod) => {
+    return tasks.map((task) =>
+      task.timePeriod === timePeriod ? { ...task, clickNum: 0, completeCirc: 0 } : task
+    );
+  };
 
-    // Log the current time
-    console.log('Current time:', now);
+  const handleReset = (timePeriod, condition) => {
+    const now = new Date();
+    // const now = new Date('2023-11-01T00:00:00');
+    const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+    const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
+    console.log(condition, timePeriod)
+    if (condition(now)) {
+      console.log(now, timePeriod)
+      const updatedTasks = resetTaskValues(timePeriod);
 
-    // Call your reset function
-    handleMidnightReset(now);
+      setTasks(updatedTasks);
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+      return updatedTasks;
+    }
+
+    return tasks;
   };
 
   const handleMidnightReset = () => {
-    console.log("day day day");
- 
-    
+    console.log('day day day');
     const now = new Date();
+    // const now = new Date('2023-11-01T00:01:00');
     const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
     const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
-
-    //TESTING
-
-    // const now = new Date('2023-11-25T00:01:00'); // Set it to a time between midnight and two minutes past midnight
-    // const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
-    // const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
-
-    console.log('now:', now);
-    console.log('midnight:', midnight);
-
-
-    if (now >= midnight && now <= twoMinutesPastMidnight) {
-      const updatedTasks = tasks.map((task) =>
-        task.timePeriod === 'day' ? { ...task, clickNum: 0, completeCirc: 0 } : task
-      );
-
-      console.log('bleep blorp', updatedTasks);
-      setTasks(updatedTasks);
-      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-    }
-
-    // if (isAfter(now, midnight)) {
-    //   // if (now === midnight) {
-    //    const updatedTasks = tasks.map((task) =>
-    //     task.timePeriod === 'day' ? { ...task, clickNum: 0, completeCirc: 0 } : task
-    //   );
-    //   console.log("bleep blorp", updatedTasks)
-    //   setTasks(updatedTasks);
-    //   localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-    // }
-    return updatedTasks;
+    return handleReset('day', (now) => now >= midnight && now <= twoMinutesPastMidnight);
   };
-  
 
 
-
-    // simulateMidnight()
   const handleWeeklyReset = () => {
-    // console.log("week week week")
+    // const now = new Date('2023-12-04T00:00:00');
+    // const isMonday = now.getDay() === 1;
     const now = new Date();
-    const nextMonday = new Date(now);
-    nextMonday.setDate(now.getDate() + ((7 - now.getDay()) + 1) % 7); // Calculate days until next Monday
-    // console.log("nextMonday", nextMonday)
-    nextMonday.setHours(0, 0, 0, 0);
-
-    const updatedTasks = tasks.map((task) => {
-      if (task.timePeriod === 'week' && now >= nextMonday) {
-        // Reset clickNum and completeCirc for tasks with timePeriod === "week"
-        return { ...task, clickNum: 0, completeCirc: 0 };
-      }
-      return task;
-    });
-
-    setTasks(updatedTasks);
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    const isMonday = new Date().getDay() === 1;
+    const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+   
+    // console.log(isMonday, "week?")
+   
+    const condition = () => isMonday && now >= midnight;
+    
+    return handleReset('week', condition);
   };
 
   const handleMonthlyReset = () => {
-    // console.log("month month month")
+    // const now = new Date('2023-11-01T00:01:00');
+    // const isFirstDayOfMonth = now.getDate() === 1;
     const now = new Date();
-    const nextMonth = new Date(now);
-    nextMonth.setMonth(now.getMonth() + 1, 1); // Set to the first day of the next month
-    nextMonth.setHours(0, 0, 0, 0);
-
-    const updatedTasks = tasks.map((task) => {
-      if (task.timePeriod === 'month' && now >= nextMonth) {
-        // Reset clickNum and completeCirc for tasks with timePeriod === "month"
-        return { ...task, clickNum: 0, completeCirc: 0 };
-      }
-      return task;
-    });
-
-    setTasks(updatedTasks);
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    const isFirstDayOfMonth = new Date().getDate() === 1;
+    const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+    const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
+    return handleReset('month', (now) => isFirstDayOfMonth && now >= midnight && now <= twoMinutesPastMidnight);
   };
-
-  //   useEffect(() => {
-  //   const intervalId = setInterval(handleMidnightReset, 60000); // Check every minute (adjust as needed)
-
-  //   // Cleanup the interval on component unmount
-  //   return () => clearInterval(intervalId);
-  // }, [tasks]);
-
-
-
 
   useEffect(() => {
     // Load tasks from localStorage on component mount
@@ -116,14 +70,13 @@ export const TaskProvider = ({ children }) => {
     setTasks(savedTasks);
   }, []);
 
-
   useEffect(() => {
     const intervalId = setInterval(() => {
-      handleMidnightReset()
-      handleWeeklyReset()
-      handleMonthlyReset()
-    }, 10000)
-    // }, 60000)
+      handleMidnightReset();
+      handleWeeklyReset();
+      handleMonthlyReset();
+    }, 10000);
+
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
   }, [tasks]);
