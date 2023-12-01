@@ -18,17 +18,16 @@ export const TaskProvider = ({ children }) => {
     const now = new Date('2023-12-04T00:00:00');
 
     // const now = new Date();
-    
+
     const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
     const twoMinutesPastMidnight = set(midnight, { minutes: 2 });
-    console.log(condition, timePeriod)
+
     if (condition(now)) {
       const isMidnight = now >= midnight;
       const isTwoMinutesPastMidnight = now <= twoMinutesPastMidnight;
-      console.log('Is midnight?', isMidnight);
-      console.log('Is two minutes past midnight?', isTwoMinutesPastMidnight);
+
       const updatedTasks = resetTaskValues(timePeriod);
-      console.log("handle reset", updatedTasks)
+
       setTasks(updatedTasks);
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
       return updatedTasks;
@@ -38,7 +37,7 @@ export const TaskProvider = ({ children }) => {
   };
 
   const handleMidnightReset = () => {
-    console.log('day day day');
+    // console.log('day day day');
     // const now = new Date('2023-11-01T00:00:00');
     const now = new Date();
     const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
@@ -54,11 +53,11 @@ export const TaskProvider = ({ children }) => {
     const now = new Date();
     const isMonday = new Date().getDay() === 1;
     const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
-   
+
     // console.log(isMonday, "week?")
-   
+
     const condition = () => isMonday && now >= midnight;
-    
+
     return handleReset('week', condition);
   };
 
@@ -89,8 +88,8 @@ export const TaskProvider = ({ children }) => {
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
   }, [tasks]);
-      
- 
+
+
 
   const addTask = (newTask) => {
     try {
