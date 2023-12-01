@@ -13,6 +13,7 @@ export const TaskProvider = ({ children }) => {
   };
 
   const handleReset = (timePeriod, condition) => {
+
     const now = new Date();
     // const now = new Date('2023-11-01T00:00:00');
     const midnight = set(now, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
@@ -77,9 +78,12 @@ export const TaskProvider = ({ children }) => {
       handleMonthlyReset();
     }, 10000);
 
+
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
   }, [tasks]);
+      
+ 
 
   const addTask = (newTask) => {
     try {
