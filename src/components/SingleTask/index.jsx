@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTaskContext } from '../TaskContext';
+import "./singleTask.css"
 
 export default function SingleTask({ task }) {
   const [isComplete, setIsComplete] = useState(false)
-  const { deleteTask, tasks } = useTaskContext();
+  const [isPriority, setIsPriority] = useState(false)
+  const { deleteTask, tasks, setComplete, setPriority } = useTaskContext();
+
+// console.log(isPriority)
 
   const handleDelete = () => {
     deleteTask(task?.name);
@@ -11,40 +15,53 @@ export default function SingleTask({ task }) {
 
   useEffect(() => {
     const storedTask = tasks.find((t) => t.name === task?.name);
-    console.log(storedTask)
-    
-    if (storedTask.complete) {
-      setIsComplete(true)
-      
+    if (storedTask && storedTask.priority) {
+      setIsPriority(true)
+    } else {
+      setIsPriority(false)
+    }
+    if (storedTask && storedTask.complete) {
+      setIsComplete(true);
+    } else {
+      setIsComplete(false);
     }
   }, [tasks, task?.name]);
 
   function handleCheckboxChange() {
     if (task && task.name) {
-      const existingTask = tasks.find((t) => t.name === task.name);
+      // Toggle the completion status using setComplete
+      setComplete(task.name, !isComplete);
+      // Update the local state to reflect the change
+      setIsComplete(!isComplete);
+    }
+  }
 
-      if (existingTask) {
-       
-        const updatedTask = {
-          ...existingTask,
-          complete: !isComplete  
-        };
-
-       
-        setIsComplete(!isComplete);
-        const updatedTasks = tasks.map((t) =>
-          t.name === task.name ? updatedTask : t
-        );
-
-       
-        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-      }
+  function handlePriorityChange() {
+    if (task && task.name) {
+      // Toggle the completion status using setComplete
+      setPriority(task.name, !isPriority);
+      // Update the local state to reflect the change
+      setIsPriority(!isPriority);
     }
   }
 
   return (
     <>
       <h3>{task?.name}</h3>
+      <label>
+        <input
+          type="checkbox"
+          checked={isPriority}
+          onChange={handlePriorityChange}
+        />
+        <span
+          className={`priority ${isPriority ? "priority--active" : ""}`}
+          // This element is purely decorative so
+          // we hide it for screen readers
+          aria-hidden="true"
+        />
+        
+      </label>
 
       <label>
         <input
@@ -52,8 +69,22 @@ export default function SingleTask({ task }) {
           checked={isComplete}
           onChange={handleCheckboxChange}
         />
-        Complete
+        <svg
+          className={`checkbox ${isComplete ? "checkbox--active" : ""}`}
+          // This element is purely decorative so
+          // we hide it for screen readers
+          aria-hidden="true"
+          viewBox="0 0 15 11"
+          fill="none"
+        >
+          <path
+            d="M1 4.5L5 9L14 1"
+            strokeWidth="2"
+            stroke={isComplete ? "#fff" : "none"} // only show the checkmark when `isCheck` is `true`
+          />
+        </svg>
       </label>
+
       <li className='del-btn' onClick={handleDelete}>Delete</li>
 
     </>

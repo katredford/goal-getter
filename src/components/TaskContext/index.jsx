@@ -111,6 +111,30 @@ export const TaskProvider = ({ children }) => {
     }
   };
 
+  const setComplete = (taskName, isComplete) => {
+    try {
+      const updatedTasks = tasks.map((task) =>
+        task.name === taskName ? { ...task, complete: isComplete } : task
+      );
+      setTasks(updatedTasks);
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    } catch (error) {
+      console.error('Error updating task completion in localStorage:', error);
+    }
+  };
+
+  const setPriority = (taskName, isPriority) => {
+    try {
+      const updatedTasks = tasks.map((task) =>
+        task.name === taskName ? { ...task, priority: isPriority } : task
+      );
+      setTasks(updatedTasks);
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    } catch (error) {
+      console.error('Error updating task completion in localStorage:', error);
+    }
+  };
+
   const incrementTask = (updatedTask) => {
     try {
       const updatedTasks = tasks.map((task) =>
@@ -124,7 +148,7 @@ export const TaskProvider = ({ children }) => {
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, addTask, deleteTask, incrementTask }}>
+    <TaskContext.Provider value={{ tasks, addTask, deleteTask, incrementTask, setComplete, setPriority }}>
       {children}
     </TaskContext.Provider>
   );
