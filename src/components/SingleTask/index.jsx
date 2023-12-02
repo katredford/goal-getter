@@ -6,12 +6,27 @@ export default function SingleTask({ task }) {
   const [isComplete, setIsComplete] = useState(false)
   const [isPriority, setIsPriority] = useState(false)
   const { deleteTask, tasks, setComplete, setPriority } = useTaskContext();
+  const [isBlinking, setIsBlinking] = useState(false);
 
 // console.log(isPriority)
 
   const handleDelete = () => {
     deleteTask(task?.name);
   };
+
+
+  useEffect(() => {
+    // Compare the current date with the deadline date
+    const currentDate = new Date();
+    const deadlineDate = new Date(task.deadline.date + 'T' + task.deadline.time);
+
+    // If the dates are the same, enable blinking
+    if (currentDate.toDateString() === deadlineDate.toDateString()) {
+      setIsBlinking(true);
+    } else {
+      setIsBlinking(false);
+    }
+  }, [task.deadline.date, task.deadline.time]);
 
   useEffect(() => {
     const storedTask = tasks.find((t) => t.name === task?.name);
@@ -60,7 +75,7 @@ export default function SingleTask({ task }) {
   const formattedDateTime = `${formattedDate} ${formattedTime}`;
   return (
     <>
-      <div className='singleTaskCard'>
+      <div className={`singleTaskCard ${isBlinking ? 'blinking' : ''}`}>
       <h3>{task?.name}</h3>
       <h3>Deadline: {formattedDateTime}</h3>
       

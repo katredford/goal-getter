@@ -72,3 +72,59 @@ li {
     url("./fonts/Nanum_Gothic_Coding/NanumGothicCoding-Regular.ttf") format("truetype");
   font-weight: regular;
 }
+
+@keyframes blink {
+  0% {
+    background-color: transparent;
+  }
+
+  50% {
+    background-color: yellow;
+    /* or any other color you prefer */
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes blink {
+  0% {
+    background-color: transparent;
+  }
+
+  50% {
+    background-color: yellow;
+    /* or any other color you prefer */
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+.blinking {
+  animation: blink 1s infinite;
+  /* You can adjust the duration and iteration count as needed */
+}
+
+@keyframes past-due {
+  0% {
+    background-color: greenyellow;
+  }
+
+  50% {
+    /* background-color: rgb(255, 0, 225); */
+    /* or any other color you prefer */
+    background-image: url("../../../public/past-due-background.png");
+  }
+
+  100% {
+    background-color: yellowgreen;
+  }
+}
+
+.flashing-past-due {
+  animation: past-due 1s infinite;
+  /* You can adjust the duration and iteration count as needed */
+}
