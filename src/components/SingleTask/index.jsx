@@ -45,9 +45,26 @@ export default function SingleTask({ task }) {
     }
   }
 
+  const formattedDate = new Date(task.deadline.date ).toLocaleDateString('en-GB', {
+    month: 'numeric',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+  const formattedTime = new Date(task.deadline.date + 'T' + task.deadline.time).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+// console.log(formattedTime)
+  const formattedDateTime = `${formattedDate} ${formattedTime}`;
   return (
     <>
+      <div className='singleTaskCard'>
       <h3>{task?.name}</h3>
+      <h3>Deadline: {formattedDateTime}</h3>
+      
+        <div className='clickables-box'>
       <label>
         <input
           type="checkbox"
@@ -85,8 +102,9 @@ export default function SingleTask({ task }) {
         </svg>
       </label>
 
-      <li className='del-btn' onClick={handleDelete}>Delete</li>
-
+        <li className='del-btn' onClick={handleDelete}>Delete</li>
+      </div>
+    </div>
     </>
   )
 }

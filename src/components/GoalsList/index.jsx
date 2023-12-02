@@ -35,23 +35,6 @@ export default function GoalsList() {
     return a.name.localeCompare(b.name);
   });
 
-  // // Sorting logic
-  // const sortedTasks = [...tasks].sort((a, b) => {
-  //   // Sort by priority first (true comes before false)
-  //   if (b.priority - a.priority !== 0) {
-  //     return b.priority - a.priority;
-  //   }
-
-  //   // If priority is the same, sort by deadline for singleTasks
-  //   if (a.frequency === "" && b.frequency === "") {
-  //     const aDeadline = new Date(a.deadline.date + 'T' + a.deadline.time);
-  //     const bDeadline = new Date(b.deadline.date + 'T' + b.deadline.time);
-  //     return aDeadline - bDeadline;
-  //   }
-
-  //   // If priority is the same, you can sort by other criteria, e.g., task name
-  //   return a.name.localeCompare(b.name);
-  // });
 
   useEffect(() => {
     // The effect will run whenever taskChange changes
