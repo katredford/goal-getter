@@ -1,5 +1,30 @@
 
+input[type="checkbox"] {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
 
+.priority::before {
+  color: #535353;
+  /* margin-right: 9px; */
+
+  font-size: 32px;
+  content: "★"
+}
+
+
+.priority--active::before {
+  color: #ffe114;
+  /* margin-right: 9px; */
+
+  font-size: 32px;
+  content: "★"
+}
 
  form {
   display: flex;

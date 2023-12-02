@@ -128,3 +128,13 @@ li {
   animation: past-due 1s infinite;
   /* You can adjust the duration and iteration count as needed */
 }
+
+.deadline-box {
+  display: flex;
+  
+}
+
+.deadline-box h3{
+ margin: 5px;
+
+}

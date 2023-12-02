@@ -97,15 +97,20 @@ export default function CreateGoal() {
         )}
 
 
+        
         <label>
+          Priority:
           <input
             type="checkbox"
             checked={isChecked}
             onChange={handleCheckboxChange}
           />
-          Priority
+          <span
+            className={`priority ${isChecked ? "priority--active" : ""}`}
+            aria-hidden="true"
+          />
+          
         </label>
-
         {timePeriod === 'no-repeat' && (
 
           <label>
