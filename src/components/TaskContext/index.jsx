@@ -123,6 +123,22 @@ export const TaskProvider = ({ children }) => {
     }
   };
 
+  const setColor = (taskName, selectedColor) => {
+    try {
+      const updatedTasks = tasks.map((task) => {
+        if (task.name === taskName) {
+          return { ...task, color: selectedColor };
+        }
+        return task;
+      });
+
+      setTasks(updatedTasks);
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    } catch (error) {
+      console.error('Error updating task color in localStorage:', error);
+    }
+  };
+
   const setPriority = (taskName, isPriority) => {
     try {
       const updatedTasks = tasks.map((task) =>
@@ -148,7 +164,7 @@ export const TaskProvider = ({ children }) => {
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, addTask, deleteTask, incrementTask, setComplete, setPriority }}>
+    <TaskContext.Provider value={{ tasks, addTask, deleteTask, incrementTask, setComplete, setPriority, setColor }}>
       {children}
     </TaskContext.Provider>
   );

@@ -8,20 +8,16 @@ export default function CreateGoal() {
   const [timePeriod, setTimePeriod] = useState('no-repeat');
   const [isChecked, setIsChecked] = useState(false);
   const [deadline, setDeadline] = useState({ date: '', time: '' });
-  const { addTask } = useTaskContext();
+  const [color, setColor] = useState('#c798cd')
+  const { addTask, tasks } = useTaskContext();
 
 
   function handleTaskNameChange(event) {
     setTaskName(event.target.value);
   }
 
-  // function handleDeadlineChange(event) {
-  //   console.log(event.target)
-  //   setDeadlineDate(event.target.value);
-  // }
 
   function handleDeadlineChange(event) {
-    // Check if the event target has a 'type' property (i.e., it's an input element)
     if (event.target.type === 'date' || event.target.type === 'time') {
       setDeadline((prevDeadline) => ({
         ...prevDeadline,
@@ -43,6 +39,11 @@ export default function CreateGoal() {
     setIsChecked(!isChecked);
   };
 
+  const handleColorChange = (event) => {
+    console.log(event.target.value)
+    setColor(event.target.value)
+  };
+
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -54,11 +55,13 @@ export default function CreateGoal() {
       priority: isChecked,
       deadline: deadline,
       complete: false,
+      color: color,
       clickNum: 0,
       completeCirc: 0,
     };
 
 
+ 
     addTask(newTask);
 
 
@@ -67,6 +70,7 @@ export default function CreateGoal() {
     setTimePeriod('no-repeat');
     setIsChecked(false);
     setDeadline({ date: '', time: '' });
+    setColor('#c798cd')
   }
 
 
@@ -96,8 +100,6 @@ export default function CreateGoal() {
           </label>
         )}
 
-
-        
         <label>
           Priority:
           <input
@@ -128,8 +130,14 @@ export default function CreateGoal() {
           </label>
         )}
 
-
-
+        <input
+          type="color"
+          // checked={isComplete}
+          onChange={handleColorChange}
+          id="favcolor"
+          value={color}
+        />
+       
         <button type='submit'>Create Task</button>
       </form>
     </>

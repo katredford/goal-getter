@@ -116,7 +116,7 @@ li {
   50% {
     /* background-color: rgb(255, 0, 225); */
     /* or any other color you prefer */
-    background-image: url("../../../public/past-due-background.png");
+    background-image: url("/past-due-background.png");
   }
 
   100% {

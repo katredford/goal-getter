@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useTaskContext } from '../TaskContext';
 import "./singleTask.css"
+import { parse } from 'date-fns';
 
 export default function SingleTask({ task }) {
   const [isComplete, setIsComplete] = useState(false)
   const [isPriority, setIsPriority] = useState(false)
-  const { deleteTask, tasks, setComplete, setPriority } = useTaskContext();
+  const { deleteTask, tasks, setComplete, setPriority, setColor } = useTaskContext();
   const [isBlinking, setIsBlinking] = useState(false);
   const [isPastDue, setIsPastDue] = useState(false)
+  const [colorChange, setColorChage] = useState(task.color)
 
   // console.log(isPriority)
 
@@ -15,32 +17,33 @@ export default function SingleTask({ task }) {
     deleteTask(task?.name);
   };
 
-
   useEffect(() => {
     const currentDate = new Date();
-    const formattedCurrentDate = currentDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
+    const formattedCurrentDate = currentDate.toLocaleDateString('en-US'); // Format as 'MM/DD/YYYY'
     const deadlineDate = task.deadline.date;
-    // console.log(formattedCurrentDate);
-    // console.log(deadlineDate);
 
-    const currentDateObj = new Date(formattedCurrentDate);
-    const deadlineDateObj = new Date(deadlineDate);
+    // Parse the deadlineDate using date-fns
+    const deadlineDateParsed = parse(deadlineDate, 'yyyy-MM-dd', new Date());
 
+    // console.log("Formatted Current Date:", formattedCurrentDate);
+    // console.log("Deadline Date:", deadlineDateParsed.toLocaleDateString('en-US'));
+   
     // If the dates are the same, enable blinking
-    if (currentDateObj.getTime() === deadlineDateObj.getTime()) {
+    if (formattedCurrentDate === deadlineDateParsed.toLocaleDateString('en-US')) {
+      // console.log("Same day");
       setIsBlinking(true);
     } else {
       setIsBlinking(false);
     }
 
     // If the deadline is in the past or equal to the current date, set isPastDue to true
-    if (currentDateObj >= deadlineDateObj) {
+    if (formattedCurrentDate > deadlineDateParsed.toLocaleDateString('en-US')) {
+      // console.log("The date should be in the past");
       setIsPastDue(true);
     } else {
       setIsPastDue(false);
     }
   }, [task.deadline.date]);
-
 
   useEffect(() => {
     const storedTask = tasks.find((t) => t.name === task?.name);
@@ -72,13 +75,21 @@ export default function SingleTask({ task }) {
     }
   }
 
-  const formattedDate = new Date(task.deadline.date).toLocaleDateString('en-US', {
-    month: 'numeric',
-    day: 'numeric',
-    year: 'numeric',
-  });
+  const handleColorChange = (event) => {
+    
+    if (task && task.name) {
+      setColor(task.name, event.target.value)
+      setColorChage(event.target.value)
+    }
+    
+  };
 
 
+  const parts = task.deadline.date.split('-');
+  const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
+
+  // console.log(formattedDate, task.deadline.date);
+  
   const formattedTime = new Date(task.deadline.date + 'T' + task.deadline.time).toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
@@ -88,8 +99,11 @@ export default function SingleTask({ task }) {
   return (
     <>
 
+      {/* <div className={`singleTaskCard ${isBlinking ? 'blinking' : ''}
+       ${isPastDue ? 'flashing-past-due' : ''}`}> */}
       <div className={`singleTaskCard ${isBlinking ? 'blinking' : ''}
-       ${isPastDue ? 'flashing-past-due' : ''}`}>
+       ${isPastDue ? 'flashing-past-due' : ''}`}
+        style={{ backgroundColor: isBlinking ? '' : colorChange }}>
         <h3>{task?.name}</h3>
         <div className='deadline-box'>
 
@@ -136,6 +150,15 @@ export default function SingleTask({ task }) {
               />
             </svg>
           </label>
+
+          <input
+            type="color"
+            // checked={isComplete}
+            onChange={handleColorChange}
+            id="favcolor"
+            value={colorChange}
+          />
+
 
           <li className='del-btn' onClick={handleDelete}>Delete</li>
         </div>
