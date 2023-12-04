@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTaskContext } from '../TaskContext';
+import { v4 as uuidv4 } from 'uuid';
 import "./createGoal.css"
 
 export default function CreateGoal() {
@@ -46,9 +47,10 @@ export default function CreateGoal() {
 
   function handleSubmit(event) {
     event.preventDefault();
-
+    const taskId = uuidv4();
 
     const newTask = {
+      id: taskId,
       name: taskName,
       frequency: frequency,
       timePeriod: timePeriod,
