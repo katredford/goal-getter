@@ -11,7 +11,7 @@ export default function GoalCard({ task }) {
   const [clickNum, setClickNum] = useState(0);
   const { deleteTask, incrementTask, tasks, setPriority, setColor } = useTaskContext();
   const [isPriority, setIsPriority] = useState(false)
-  const [colorChange, setColorChage] = useState(task.color)
+  const [colorChange, setColorChange] = useState(task.color)
 
   const handleDelete = () => {
     deleteTask(task?.name);
@@ -84,7 +84,7 @@ export default function GoalCard({ task }) {
     console.log(event.target.value);
     if (task && task.name) {
       setColor(task.name, event.target.value)
-      setColorChage(event.target.value)
+      setColorChange(event.target.value)
     }
 
   };
@@ -109,6 +109,13 @@ export default function GoalCard({ task }) {
         <h2>Complete!</h2>
       )}
         <li className='del-btn' onClick={handleDelete}>Delete</li>
+          <input
+            type="color"
+            // checked={isComplete}
+            onChange={handleColorChange}
+            id="favcolor"
+            value={colorChange}
+          />
 
         <label>
           <input
@@ -121,13 +128,6 @@ export default function GoalCard({ task }) {
             aria-hidden="true"
           />
         </label>
-        <input
-          type="color"
-          // checked={isComplete}
-          onChange={handleColorChange}
-          id="favcolor"
-          value={colorChange}
-        />
       </div>
     </div>
   );

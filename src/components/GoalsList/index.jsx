@@ -90,7 +90,8 @@ export default function GoalsList() {
           task.frequency !== "" && (
             <GoalCard key={index} task={task}
               onDelete={() => handleDelete(task.name)}
-              style={{ backgroundColor: task.color }}
+              onPriorityChange={(isPriority) => handlePriorityChange(task.name, isPriority)}
+              // style={{ backgroundColor: task.color }}
             />
           )
         ))}

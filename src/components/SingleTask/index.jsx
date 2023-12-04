@@ -80,6 +80,8 @@ export default function SingleTask({ task }) {
     if (task && task.name) {
       setColor(task.name, event.target.value)
       setColorChage(event.target.value)
+
+      // setIsBlinking(true);
     }
     
   };
@@ -96,14 +98,22 @@ export default function SingleTask({ task }) {
     hour12: true,
   });
 
+  const blinkingStyle = {
+    backgroundColor: colorChange,
+    '--blinking-color': colorChange,
+  };
+
+  // console.log("isBlinking:", isBlinking);
+  // console.log("isPastDue:", isPastDue);
+
   return (
     <>
+      <div
+        className={`singleTaskCard ${isBlinking ? 'blinking' : ''} ${isPastDue ? 'flashing-past-due' : ''}`}
+        style={blinkingStyle}
+      >
 
-      {/* <div className={`singleTaskCard ${isBlinking ? 'blinking' : ''}
-       ${isPastDue ? 'flashing-past-due' : ''}`}> */}
-      <div className={`singleTaskCard ${isBlinking ? 'blinking' : ''}
-       ${isPastDue ? 'flashing-past-due' : ''}`}
-        style={{ backgroundColor: isBlinking ? '' : colorChange }}>
+
         <h3>{task?.name}</h3>
         <div className='deadline-box'>
 

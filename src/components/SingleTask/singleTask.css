@@ -73,13 +73,14 @@ li {
   font-weight: regular;
 }
 
+
 @keyframes blink {
   0% {
     background-color: transparent;
   }
 
   50% {
-    background-color: yellow;
+    background-color: var(--blinking-color);
     /* or any other color you prefer */
   }
 
@@ -88,27 +89,34 @@ li {
   }
 }
 
-@keyframes blink {
+
+
+@keyframes past-due {
   0% {
-    background-color: transparent;
+    background-color: greenyellow;
   }
-
+  
   50% {
-    background-color: yellow;
+    /* background-color: rgb(255, 0, 225); */
     /* or any other color you prefer */
+    background-image: url("/past-due-background.png");
   }
-
+  
   100% {
-    background-color: transparent;
+    background-color: yellowgreen;
   }
 }
 
-.blinking {
-  animation: blink 1s infinite;
+.flashing-past-due {
+  animation: past-due .5s infinite;
   /* You can adjust the duration and iteration count as needed */
 }
 
-@keyframes past-due {
+.blinking {
+  animation: blink 2s infinite;
+  /* You can adjust the duration and iteration count as needed */
+}
+@keyframes very-late {
   0% {
     background-color: greenyellow;
   }
@@ -116,7 +124,7 @@ li {
   50% {
     /* background-color: rgb(255, 0, 225); */
     /* or any other color you prefer */
-    background-image: url("/past-due-background.png");
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFFFFF" width="48px" height="48px"><text x="50%" y="50%" font-size="12" dominant-baseline="middle" text-anchor="middle">💀</text></svg>');
   }
 
   100% {
@@ -124,7 +132,7 @@ li {
   }
 }
 
-.flashing-past-due {
+.flashing-very-late {
   animation: past-due 1s infinite;
   /* You can adjust the duration and iteration count as needed */
 }
@@ -138,3 +146,5 @@ li {
  margin: 5px;
 
 }
+
+/* background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFFFFF" width="48px" height="48px"><text x="50%" y="50%" font-size="12" dominant-baseline="middle" text-anchor="middle">💀</text></svg>'); */
