@@ -14,8 +14,8 @@ input[type="checkbox"] {
   color: #535353;
   /* margin-right: 9px; */
 
-  font-size: 26px;
-  content: "🎨"
+  font-size: 50px;
+  content: "🎨 "
     /* 🔘
   🎨 */
 }
@@ -24,7 +24,7 @@ input[type="checkbox"] {
   color: #535353;
   /* margin-right: 9px; */
 
-  font-size: 32px;
+  font-size: 12px;
   content: "★"
 }
 
@@ -33,7 +33,7 @@ input[type="checkbox"] {
   color: #ffe114;
   /* margin-right: 9px; */
 
-  font-size: 32px;
+  font-size: 68px;
   content: "★"
 }
 
@@ -42,7 +42,35 @@ input[type="checkbox"] {
   flex-direction: column;
    flex-wrap: wrap;
    width:200px;
+   margin:2px;
 }
+.creatForm--taskName {
+  font-size: 31px;
+}
+
+label {
+  font-size: 31px;
+  margin: 2px;
+}
+form input {
+  font-size: 28px;
+}
+form select {
+  font-size: 37px;
+}
+
+
+form button{
+  font-size: 45px;
+}
+
+form button:hover {
+  font-size: 45px;
+  background-color: greenyellow;
+}
+/* .creatForm--taskName-input {
+  font-size: 31px;
+} */
 
 @media screen and (max-width: 400px) {
   /* body {
@@ -51,6 +79,6 @@ input[type="checkbox"] {
 
    form {
   
-    width:300px;
+    width:100%;
   } 
 }  

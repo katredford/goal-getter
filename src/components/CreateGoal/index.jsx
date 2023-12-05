@@ -79,14 +79,14 @@ export default function CreateGoal() {
   return (
     <>
       <form className="createForm" onSubmit={handleSubmit}>
-        <label>
+        <label className='creatForm--taskName'>
           Task Name:
-          <input type="text" value={taskName} onChange={handleTaskNameChange}></input>
+          <input className='creatForm--taskName-input' type="text" value={taskName} onChange={handleTaskNameChange}></input>
         </label>
 
         <label>
           Time Period:
-          <select value={timePeriod} onChange={handleTimePeriodChange}>
+          <select className="createForm--time-period" value={timePeriod} onChange={handleTimePeriodChange}>
             <option value="no-repeat">one time task</option>
             <option value="day"> Day</option>
             <option value="week">Week</option>
