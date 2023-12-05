@@ -9,6 +9,17 @@ input[type="checkbox"] {
   width: 1px;
 }
 
+
+.color-picker::before {
+  color: #535353;
+  /* margin-right: 9px; */
+
+  font-size: 26px;
+  content: "🎨"
+    /* 🔘
+  🎨 */
+}
+
 .priority::before {
   color: #535353;
   /* margin-right: 9px; */

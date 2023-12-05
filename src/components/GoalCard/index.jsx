@@ -14,11 +14,11 @@ export default function GoalCard({ task }) {
   const [colorChange, setColorChange] = useState(task.color)
 
   const handleDelete = () => {
-    deleteTask(task?.name);
+    deleteTask(task?.id);
   };
 
   useEffect(() => {
-    const storedTask = tasks.find((t) => t.name === task?.name);
+    const storedTask = tasks.find((t) => t.id === task?.id);
     if (storedTask) {
       setClickNum(storedTask.clickNum || 0);
       setProgress(storedTask.completeCirc || 0);
@@ -28,17 +28,17 @@ export default function GoalCard({ task }) {
         setProgress(100);
       }
     }
-  }, [tasks, task?.name]);
+  }, [tasks, task?.id]);
 
   useEffect(() => {
-    const storedTask = tasks.find((t) => t.name === task?.name);
+    const storedTask = tasks.find((t) => t.id === task?.id);
     if (storedTask && storedTask.priority) {
       setIsPriority(true)
     } else {
       setIsPriority(false)
     }
    
-  }, [tasks, task?.name]);
+  }, [tasks, task?.id]);
 
   const handleIncrement = () => {
     const completeCirc = 100 / task?.frequency;
@@ -58,8 +58,8 @@ export default function GoalCard({ task }) {
       setClickNum(0);
     }
 
-    if (task && task.name) {
-      const existingTask = tasks.find((t) => t.name === task.name);
+    if (task && task.id) {
+      const existingTask = tasks.find((t) => t.id === task.id);
 
       if (existingTask) {
         // Task already exists, update it
@@ -74,16 +74,16 @@ export default function GoalCard({ task }) {
   };
 
   function handlePriorityChange() {
-    if (task && task.name) {
-      setPriority(task.name, !isPriority);
+    if (task && task.id) {
+      setPriority(task.id, !isPriority);
       setIsPriority(!isPriority);
     }
   }
 
   const handleColorChange = (event) => {
     console.log(event.target.value);
-    if (task && task.name) {
-      setColor(task.name, event.target.value)
+    if (task && task.id) {
+      setColor(task.id, event.target.value)
       setColorChange(event.target.value)
     }
 
@@ -92,10 +92,42 @@ export default function GoalCard({ task }) {
   return (
     <div className='goalCard'
       style={{ backgroundColor: colorChange }}>
+      <div className='goalCard--top'>
+      <label>
+        <input
+          type="checkbox"
+          checked={isPriority}
+          onChange={handlePriorityChange}
+        />
+        <span
+          className={`priority ${isPriority ? "priority--active" : ""}`}
+          aria-hidden="true"
+        />
+      </label>
+
+      <div>
       <h3>{task?.name}</h3>
       <p>
        {task?.frequency} times every {task?.timePeriod}
-      </p>
+          </p>
+          
+        </div>
+        <label>
+        <input
+          type="color"
+          // checked={isComplete}
+          onChange={handleColorChange}
+          id="favcolor"
+          value={colorChange}
+        />
+
+        <span
+            
+            className='color mirror'
+          aria-hidden="true"
+        />
+      </label>
+      </div>
       <Ring radius={100} stroke={10} progress={progress} />
       {/* <div className='background-circ'>hellow</div> */}
       <h1 className='click-total'>{clickNum}</h1>
@@ -109,25 +141,7 @@ export default function GoalCard({ task }) {
         <h2>Complete!</h2>
       )}
         <li className='del-btn' onClick={handleDelete}>Delete</li>
-          <input
-            type="color"
-            // checked={isComplete}
-            onChange={handleColorChange}
-            id="favcolor"
-            value={colorChange}
-          />
 
-        <label>
-          <input
-            type="checkbox"
-            checked={isPriority}
-            onChange={handlePriorityChange}
-          />
-          <span
-            className={`priority ${isPriority ? "priority--active" : ""}`}
-            aria-hidden="true"
-          />
-        </label>
       </div>
     </div>
   );

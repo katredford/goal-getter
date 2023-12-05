@@ -101,9 +101,9 @@ export const TaskProvider = ({ children }) => {
     }
   };
 
-  const deleteTask = (taskName) => {
+  const deleteTask = (taskId) => {
     try {
-      const updatedTasks = tasks.filter((task) => task.name !== taskName);
+      const updatedTasks = tasks.filter((task) => task.id !== taskId);
       setTasks(updatedTasks);
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     } catch (error) {
@@ -111,10 +111,10 @@ export const TaskProvider = ({ children }) => {
     }
   };
 
-  const setComplete = (taskName, isComplete) => {
+  const setComplete = (taskId, isComplete) => {
     try {
       const updatedTasks = tasks.map((task) =>
-        task.name === taskName ? { ...task, complete: isComplete } : task
+        task.id === taskId ? { ...task, complete: isComplete } : task
       );
       setTasks(updatedTasks);
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
@@ -123,10 +123,10 @@ export const TaskProvider = ({ children }) => {
     }
   };
 
-  const setColor = (taskName, selectedColor) => {
+  const setColor = (taskId, selectedColor) => {
     try {
       const updatedTasks = tasks.map((task) => {
-        if (task.name === taskName) {
+        if (task.id === taskId) {
           return { ...task, color: selectedColor };
         }
         return task;
@@ -139,10 +139,10 @@ export const TaskProvider = ({ children }) => {
     }
   };
 
-  const setPriority = (taskName, isPriority) => {
+  const setPriority = (taskId, isPriority) => {
     try {
       const updatedTasks = tasks.map((task) =>
-        task.name === taskName ? { ...task, priority: isPriority } : task
+        task.id === taskId ? { ...task, priority: isPriority } : task
       );
       setTasks(updatedTasks);
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
@@ -154,7 +154,7 @@ export const TaskProvider = ({ children }) => {
   const incrementTask = (updatedTask) => {
     try {
       const updatedTasks = tasks.map((task) =>
-        task.name === updatedTask.name ? updatedTask : task
+        task.id === updatedTask.id ? updatedTask : task
       );
       setTasks(updatedTasks);
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));

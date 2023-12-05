@@ -52,45 +52,45 @@ export default function GoalsList() {
     setTaskChange(taskChange + 1);
   }, [tasks]);
 
-  const handleDelete = (taskName) => {
-    deleteTask(taskName);
+  const handleDelete = (taskId) => {
+    deleteTask(taskId);
     // Increment taskChange to trigger a re-render
     setTaskChange(taskChange + 1);
   };
 
-  const handleCheckboxChange = (taskName, isComplete) => {
-    setComplete(taskName, isComplete);
+  const handleCheckboxChange = (taskId, isComplete) => {
+    setComplete(taskId, isComplete);
     setTaskChange(taskChange + 1);
   };
 
-  const handlePriorityChange = (taskName, isPriority) => {
-    setPriority(taskName, isPriority);
-    setColor(taskName)
+  const handlePriorityChange = (taskId, isPriority) => {
+    setPriority(taskId, isPriority);
+    // setColor(taskName)
     setTaskChange(taskChange + 1);
   };
 
   return (
     <>
       <div>
-        {sortedTasks.map((task, index) => (
+        {sortedTasks.map((task) => (
           task.frequency === "" && (
             <SingleTask
-              key={index}
+              key={task.id}
               task={task}
-              onDelete={() => handleDelete(task.name)}
-              onCheckboxChange={(isComplete) => handleCheckboxChange(task.name, isComplete)}
-              onPriorityChange={(isPriority) => handlePriorityChange(task.name, isPriority)}
+              onDelete={() => handleDelete(task.id)}
+              onCheckboxChange={(isComplete) => handleCheckboxChange(task.id, isComplete)}
+              onPriorityChange={(isPriority) => handlePriorityChange(task.id, isPriority)}
               style={{ backgroundColor: task.color }}
             />
           )
         ))}
       </div>
       <div className='goalsList'>
-        {sortedTasks.map((task, index) => (
+        {sortedTasks.map((task) => (
           task.frequency !== "" && (
-            <GoalCard key={index} task={task}
-              onDelete={() => handleDelete(task.name)}
-              onPriorityChange={(isPriority) => handlePriorityChange(task.name, isPriority)}
+            <GoalCard key={task.id} task={task}
+              onDelete={() => handleDelete(task.id)}
+              onPriorityChange={(isPriority) => handlePriorityChange(task.id, isPriority)}
               // style={{ backgroundColor: task.color }}
             />
           )

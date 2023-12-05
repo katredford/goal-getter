@@ -14,7 +14,7 @@ export default function SingleTask({ task }) {
   // console.log(isPriority)
 
   const handleDelete = () => {
-    deleteTask(task?.name);
+    deleteTask(task?.id);
   };
 
   useEffect(() => {
@@ -27,7 +27,9 @@ export default function SingleTask({ task }) {
 
     // console.log("Formatted Current Date:", formattedCurrentDate);
     // console.log("Deadline Date:", deadlineDateParsed.toLocaleDateString('en-US'));
-   
+    const newCurrentDate = new Date(formattedCurrentDate);
+    const newDeadlineDate = new Date(deadlineDateParsed);
+
     // If the dates are the same, enable blinking
     if (formattedCurrentDate === deadlineDateParsed.toLocaleDateString('en-US')) {
       // console.log("Same day");
@@ -37,7 +39,7 @@ export default function SingleTask({ task }) {
     }
 
     // If the deadline is in the past or equal to the current date, set isPastDue to true
-    if (formattedCurrentDate > deadlineDateParsed.toLocaleDateString('en-US')) {
+    if (newCurrentDate > newDeadlineDate) {
       // console.log("The date should be in the past");
       setIsPastDue(true);
     } else {
@@ -46,7 +48,7 @@ export default function SingleTask({ task }) {
   }, [task.deadline.date]);
 
   useEffect(() => {
-    const storedTask = tasks.find((t) => t.name === task?.name);
+    const storedTask = tasks.find((t) => t.id === task?.id);
     if (storedTask && storedTask.priority) {
       setIsPriority(true)
     } else {
@@ -57,28 +59,28 @@ export default function SingleTask({ task }) {
     } else {
       setIsComplete(false);
     }
-  }, [tasks, task?.name]);
+  }, [tasks, task?.id]);
 
   function handleCheckboxChange() {
-    if (task && task.name) {
+    if (task && task.id) {
       // Toggle the completion status using setComplete
-      setComplete(task.name, !isComplete);
+      setComplete(task.id, !isComplete);
       // Update the local state to reflect the change
       setIsComplete(!isComplete);
     }
   }
 
   function handlePriorityChange() {
-    if (task && task.name) {
-      setPriority(task.name, !isPriority);
+    if (task && task.id) {
+      setPriority(task.id, !isPriority);
       setIsPriority(!isPriority);
     }
   }
 
   const handleColorChange = (event) => {
     
-    if (task && task.name) {
-      setColor(task.name, event.target.value)
+    if (task && task.id) {
+      setColor(task.id, event.target.value)
       setColorChage(event.target.value)
 
       // setIsBlinking(true);
@@ -161,6 +163,7 @@ export default function SingleTask({ task }) {
             </svg>
           </label>
 
+          <label>
           <input
             type="color"
             // checked={isComplete}
@@ -168,6 +171,13 @@ export default function SingleTask({ task }) {
             id="favcolor"
             value={colorChange}
           />
+
+          <span
+
+            className='color mirror'
+            aria-hidden="true"
+          />
+        </label>
 
 
           <li className='del-btn' onClick={handleDelete}>Delete</li>

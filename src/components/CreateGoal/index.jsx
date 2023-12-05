@@ -113,8 +113,8 @@ export default function CreateGoal() {
             className={`priority ${isChecked ? "priority--active" : ""}`}
             aria-hidden="true"
           />
-          
         </label>
+
         {timePeriod === 'no-repeat' && (
 
           <label>
@@ -132,13 +132,19 @@ export default function CreateGoal() {
           </label>
         )}
 
-        <input
+          <label>
+        <input 
           type="color"
-          // checked={isComplete}
           onChange={handleColorChange}
           id="favcolor"
           value={color}
         />
+
+        <span
+            className='color-picker'
+          aria-hidden="true"
+        />choose color
+      </label>
        
         <button type='submit'>Create Task</button>
       </form>

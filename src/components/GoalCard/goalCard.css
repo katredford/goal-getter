@@ -1,3 +1,39 @@
+input[type="color"] {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.color::before {
+  color: #535353;
+  /* margin-right: 9px; */
+
+  font-size: 26px;
+  content: "🌈"
+  /* 🔘
+  🎨 */
+}
+
+.mirror {
+  display: inline-block;
+  font-size: 30px;
+
+  -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
+  -moz-transform: matrix(-1, 0, 0, 1, 0, 0);
+  -o-transform: matrix(-1, 0, 0, 1, 0, 0);
+  transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+/* .priority--active::before {
+  color: #ffe114;
+
+
+  font-size: 32px;
+  content: "★"
+} */
 
  .goalCard {
   display: flex;
@@ -15,6 +51,11 @@
 .goalCard h2 {
   font-size: 30px;
   margin-top: 10px;
+}
+.goalCard--top{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 .click-total {
   position: absolute;
