@@ -41,7 +41,7 @@ export default function CreateGoal() {
   };
 
   const handleColorChange = (event) => {
-    console.log(event.target.value)
+    // console.log(event.target.value)
     setColor(event.target.value)
   };
 

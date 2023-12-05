@@ -148,3 +148,17 @@ li {
 }
 
 /* background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFFFFF" width="48px" height="48px"><text x="50%" y="50%" font-size="12" dominant-baseline="middle" text-anchor="middle">💀</text></svg>'); */
+
+
+
+
+@media screen and (max-width: 480px) {
+
+
+  .singleTaskCard {
+    width: 97%;
+    margin-right: 5px;
+    /* margin: 0px; */
+    /* padding: 0px; */
+  }
+}

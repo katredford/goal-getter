@@ -124,9 +124,12 @@ input[type="color"] {
 
 
     .goalCard {
-      width:100%;
+      width:80%;
       margin-top: 8px;
       /* margin: 0px; */
         padding: 0px;
+    }
+    .goalCard--top{
+      padding: 7px;
     }
 } 
